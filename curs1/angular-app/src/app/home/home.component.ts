@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   image: string = 'https://upload.wikimedia.org/wikipedia/en/3/35/Supermanflying.png'; // [src]
 
   showImage: boolean = true;
-  
+  nr:number = 1;
 
   constructor( private alertaService:AlertaService) { }
 
@@ -39,6 +39,11 @@ export class HomeComponent implements OnInit {
 
   afiseazaImagine() {
     this.showImage = !this.showImage;
+  }
+  inputEvent(){
+    if(this.nume.length >25){
+      this.alertaService.showAlert(`${this.nume} este prea lung`);
+    }
   }
 
 }

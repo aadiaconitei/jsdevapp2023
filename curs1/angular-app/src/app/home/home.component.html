@@ -21,12 +21,18 @@
 
 <h2>Transfer informatii bidirectional</h2>
 
-<input type="text" [(ngModel)]="nume">
-{{ nume }}
+<input type="text" [(ngModel)]="nume" (input)="inputEvent()">
+<p *ngIf="nume.length < 25"> {{ nume }}</p>
 <br> <br>    
 <div>
    <div *ngFor="let erou of eroi"> 
        <p *ngIf = "erou.id <=3">{{ erou.id}} - {{erou.name}} </p>
    </div>
 
+</div>
+
+<div>
+   <p>afiseaza numarul: {{ nr }}</p>
+<button (click)="nr = nr +1" [ngClass]="nr >7 ? 'green':'red'"> Creste valoarea</button>
+<button (click)="nr = nr -1"> Descreste valoarea</button>
 </div>
