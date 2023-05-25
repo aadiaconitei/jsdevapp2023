@@ -98,7 +98,7 @@ npm install popper.js --save
 
 
 ### Sau descarcam aplicatia de pe github
-- https://github.com/aadiaconitei/javascript/tree/master/curs10/apm-app
+- https://github.com/aadiaconitei/
 ### 
 ```
 npm install
