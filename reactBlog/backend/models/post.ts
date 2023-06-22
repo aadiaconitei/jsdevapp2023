@@ -71,13 +71,13 @@ export const findOne = (postId: number, callback: Function) => {
 // create post
 export const addPost = (post: Post, callback: Function) => {
   const queryString =
-    "INSERT INTO posts (titlu, continut, categorie_id, user_id) VALUES (?, ?, ?, ?)";
+    "INSERT INTO posts (titlu, continut, categorie_id, user_id,poza) VALUES (?, ?, ?, ?, ?)";
   console.log(post);
   
   try {
     let sqldeb = db.query(
       queryString,
-      [post.titlu, post.continut, post.categorie_id, post.user_id],
+      [post.titlu, post.continut, post.categorie_id, post.user_id, post.poza],
       (err, result) => {
         if (err) {
           callback(err);
