@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = "databinding">
+        <button @:click = "afiseazaTotal()">Calculeaza</button>
+        <h2> Suma numerelor:  {{ num1 }} + {{ num2 }} = {{total}}</h2>
+
+        <div :style = "styleobj" v-on:mouseover = "changebgcolor()" v-on:mouseout = "originalcolor()"></div>
+ 
+        
+        <a :href= "hreflink" target ="_blank" >Link generat cu Vuejs</a>
+       
+     </div>
+
+     <script src="https://unpkg.com/vue@3"></script>
+    <script src="ex3_v3.js"></script>
+</body>
+</html>

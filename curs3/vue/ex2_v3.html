@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Prenume : {{fname}}</h1>
+        <h1>Nume : {{lname}}</h1>
+        <p v-bind:title="message">{{myName()}}</p>
+    </div>
+
+    <div id="app2">
+        <span v-if="seen">Un mesaj ce poate fi ascuns</span>
+        <ol>
+            <li v-for="limbaj in limbaje">
+                {{ limbaj.text }}
+            </li>
+        </ol>
+        <div v-html = "htmlcontent"></div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="ex2_v3.js"></script>
+    
+</body>
+
+</html>

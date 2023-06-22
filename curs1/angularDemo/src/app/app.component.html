@@ -1,0 +1,43 @@
+
+
+{{ title }}
+<br>
+{{ 2 + '4' }}
+
+<p [style.color] = "culoare">
+  {{ descriere }}
+</p>
+<!-- <p style =" color: {{ culoare }}">
+  {{ descriere }}
+</p>  -->
+<img src="{{ imgSrc }}" alt="" style="max-width: 300px;">
+<img *ngIf="afiseaza" [src]=" imgSrc " alt="" style="max-width: 300px;">
+
+<br>
+<button (click)="showImg()"> Afiseaza/Ascunde imaginea</button>
+<button (click)="showImg2()"> Afiseaza/Ascunde </button>
+<br>
+<button (click)=" nr = nr + 1" > Creste valoarea cu 1</button>
+<button (click)=" nr = nr - 1" > Scade valoarea cu 1</button>
+<p [ngClass]="nr >=7? 'green': 'myclass'">Valuare lui nr este {{ nr }}</p>
+
+
+<br>
+
+<form action="" method="post">
+  <input [(ngModel)]="valoare" type="text" name="nume" id="nume" (input)="inputCount()" >
+  {{valoare}}
+</form>
+
+<h1> {{ persoana.nume}}  {{ persoana.prenume}}</h1>
+
+
+<h2> Eroi</h2>
+<p>Eroii mei preferati sunt</p>
+<ul>
+    <li *ngFor=" let erou of eroi">
+
+       <span *ngIf="erou.id == 2">   {{ erou.name }}</span>
+    </li>
+</ul>
+<router-outlet></router-outlet>

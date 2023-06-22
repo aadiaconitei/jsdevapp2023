@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <button @click='counterComputed++'>computed button</button>
+            <p>{{ counterComputed }}</p> <br/>
+            <button @click="counterMethod++">method button</button>   
+            <p>{{ counterMethod }}</p> <br/>
+            {{ printTextMethod() }}
+            {{ printTextComputed }}
+          </div>
+    </div>
+    <script>
+        const { createApp } = Vue;
+        let vm = createApp({
+            data: function () {
+                return {
+                    counterComputed: 0,
+                    counterMethod: 0
+                };
+            },
+            computed: {
+                printTextComputed: function () {
+                    console.log('counter printed from computed:',this.counterComputed);
+                }
+            },
+            methods: {
+                printTextMethod: function () {
+                    console.log('counter printed from method:', this.counterMethod);
+                }
+            },
+        }).mount('#app');
+
+    </script>
+
+</body>
+
+</html>

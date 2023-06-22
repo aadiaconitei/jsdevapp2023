@@ -1,0 +1,56 @@
+aplicatia 1
+node –v
+npm –v
+-update
+npm cache clean -f
+sudo npm install -g n
+sudo n stable
+node -v
+npm -v
+
+
+git --version
+
+
+ng version
+
+-update
+sudo npm uninstall -g angular-cli
+sudo npm i --save-dev angular-cli
+sudo npm cache verify
+sudo npm cache clean
+sudo npm install -g @angular/cli@latest
+ng update @angular/core @angular/cli
+
+ng version
+
+Aplicatia 2
+ng new angular-demo
+sau ng init  dar facem noi folderul angular-demo 
+sau ng new angular-demo --routing
+pornim aplicatie
+cd angular-demo
+ng serve 
+sau ng serve --open  
+sau npm start   // comanda din sectiunea scripts in fisierul package.json.
+http://localhost:4200/
+
+ng build --aot
+
+http://localhost/jsdevapp2023/curs1/angular-app/dist/angular-demo/
+
+
+// componente 
+ng g component home
+sau ng g c test --flat  // --flat nu mai face folder
+
+// interfete
+ng generate interface model/user
+Adaugarea selectorului: <app-home></app-home> in app.component.html
+//servicii
+
+ng g s alerta
+apoi declarat in app.module.ts
+providers: [
+    AlertaService
+  ],

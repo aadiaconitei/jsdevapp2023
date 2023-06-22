@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Add React in One Minute</title>
+</head>
+<body>
+    <!-- We will put our React component inside this div. -->
+    <div id="root"></div>
+    <div id="root2"></div>
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Load our React component. -->
+    <script type="text/babel">
+        'use strict';
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        const name = 'LinkAcademy cu JSX';
+        const element = <h1> Hello {name} </h1>;
+        // in JSX intre acolade putem pune orice fel de cod java script
+        // const element = <h1> Hello {name.toUpperCase()} </h1>;
+        root.render(element);
+    </script>
+
+<script language="JavaScript"> 
+    element = React.createElement('h1', {className: 'linkAcademy'}, 'Hello React!') 
+    ReactDOM.render(element, document.getElementById('root2')); 
+ </script> 
+ <style scoped>
+    .linkAcademy{
+        color: red;
+    }
+ </style>
+</body>
+
+</html>

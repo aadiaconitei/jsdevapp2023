@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Vue</title>
+    
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            {{ message }} {{ nume }}
+            {{ 4+5}}
+        </div>
+        
+    </div>
+   
+
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+        const { createApp } = Vue;
+        let app = createApp({
+          data() {
+            return {
+              message: 'Hello Vue!',
+              nume: 'Adrian'
+            }
+          }
+        }).mount('#app')
+     
+    
+
+        // Aplicația Vue este un obiect care controlează elementul cu id-ul #app
+        // Toate elementele controlat de Aplicația Vue sunt reactive, adica:
+        // Data Binding (este legat de proprietatea message a aplicației și se
+        // schimbă când se schimbă acea proprietate)
+
+        // concret deschidem consola si tastam: app.message='Buna ziua!' Apasam Enter
+    </script>
+</body>
+
+</html>
