@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import  session, {Session} from "express-session";
+import fileUpload from 'express-fileupload';
 import { userRouter } from './routes/userRouter';
 import { postRouter } from './routes/postRouter';
 import { adminRouter } from './routes/adminRouter';
@@ -15,13 +16,15 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
+app.use(fileUpload());
 const port = process.env.PORT;
 app.use(cors());
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/admin", adminRouter);
+app.use("/uploads", express.static(path.join(__dirname+ "/uploads")));
 app.get('/', (req: Request, res: Response) => {
   //res.send('Express + TypeScript Server!!!!');
   res.sendFile(path.join(__dirname+'/acasa.html'));
@@ -29,4 +32,5 @@ app.get('/', (req: Request, res: Response) => {
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at https://localhost:${port}`);
+  
 });

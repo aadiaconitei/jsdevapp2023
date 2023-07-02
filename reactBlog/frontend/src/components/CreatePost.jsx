@@ -1,10 +1,10 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../Login.css";
 import { AuthContext } from "../context/authContext";
 import { useNavigate, Navigate } from "react-router-dom";
-//import ReactQuill from "react-quill";
-// import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
@@ -12,48 +12,50 @@ import { FormGroup, Button } from "react-bootstrap";
 import axios from "axios";
 
 import configData from "../config.json";
-// const  modules  = {
-//   toolbar: [
-//       [{ font: [] }],
-//       [{ header: [1, 2, 3, 4, 5, 6, false] }],
-//       ["bold", "italic", "underline", "strike"],
-//       [{ color: [] }, { background: [] }],
-//       [{ script:  "sub" }, { script:  "super" }],
-//       ["blockquote", "code-block"],
-//       [{ list:  "ordered" }, { list:  "bullet" }],
-//       [{ indent:  "-1" }, { indent:  "+1" }, { align: [] }],
-//       ["link", "image", "video"],
-//       ["clean"],
-//   ],
-// };
+const modules = {
+  toolbar: [
+    [{ font: [] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ script: "sub" }, { script: "super" }],
+    ["blockquote", "code-block"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+    ["link", "image", "video"],
+    ["clean"],
+  ],
+};
 export default function CreatePost() {
   let navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
   const user_id = currentUser.id;
-  const [formData, setFormData] = useState({
+  const [selectCategories, setSelectCategories] = useState([{}]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [continut, setContinut] = useState({ value: null });
+  
+  const [infoData, setInfoData] = useState({
     titlu: "",
-    continut: "",
-    poza: "",
     categorie_id: "",
-    user_id:user_id
+    poza: selectedFile ? selectedFile : '',
+    user_id: user_id,
+    continut:continut.value?continut.value:''
   });
-const [selectCategories, setSelectCategories]  = useState([{}]);
-  
 
-  
   const validationSchema = Yup.object().shape({
     titlu: Yup.string().required("Camp obligatoriu!"),
     continut: Yup.string().required("Camp obligatoriu!"),
     categorie_id: Yup.string().required("Camp obligatoriu!"),
+    poza: Yup.mixed().required("Camp obligatoriu!")
   });
 
   useEffect(() => {
     console.log("primesc datele");
     axios
-      .get(configData.SERVER_POST_URL +'categories')
+      .get(configData.SERVER_POST_URL + "categories")
       .then(({ data }) => {
-        console.log(data['data']);
-        setSelectCategories(data['data']);
+        console.log(data["data"]);
+        setSelectCategories(data["data"]);
       })
       .catch((error) => {
         console.log(error);
@@ -61,17 +63,34 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
   }, []);
 
   const handleInputChange = (event) => {
-    
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setInfoData({ ...infoData, [name]: value });
   };
-  
 
-  const handleSubmit = async (event) => {
-    // Perform registration logic here, e.g., send form data to server
+  const handleChange = (value) => {
+    setContinut({ value });
+    infoData.continut=value;
     
+  };
+  const handleFileChange = (file) => {
+    infoData.poza=file.name;
+  };
+
+  const handleSubmit = async (e) => {
+    const formData = new FormData();
+    formData.append("titlu", infoData.titlu);
+    formData.append("continut", continut.value);
+    formData.append("categorie_id", infoData.categorie_id);
+    formData.append("user_id", user_id);
+    formData.append("poza", selectedFile);
+    // Perform registration logic here, e.g., send form data to server
+
     axios
-      .post(configData.SERVER_POST_URL, formData)
+      .post(configData.SERVER_POST_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         if (res.status === 200) {
           alert("Post successfully created");
@@ -111,7 +130,7 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
                   Completeaza corect campurile!
                 </h3>
                 <Formik
-                  initialValues={formData}
+                  initialValues={infoData}
                   onSubmit={handleSubmit}
                   enableReinitialize
                   validationSchema={validationSchema}
@@ -125,7 +144,7 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
                         className="form-control"
                         placeholder="Titlu"
                         onChange={handleInputChange}
-                       />
+                      />
                       <ErrorMessage
                         name="titlu"
                         className="d-block invalid-feedback"
@@ -134,18 +153,18 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
                     </FormGroup>
                     <FormGroup>
                       <label htmlFor="continut">Continut articol</label>
-                      {/* <ReactQuill
+                      <ReactQuill
                         modules={modules}
                         name="continut"
                         className="editor"
                         theme="snow"
-                        value={continut}
+                        value={continut.value}
                         placeholder="Continut articol HTML"
                         rows="5"
-                        
+                        style={{ height: "150px", display: "inline-block" }}
                         onChange={handleChange}
-                      /> */}
-                      <Field 
+                      />
+                      {/* <Field 
                         as="textarea" 
                         id="continut" 
                         name="continut"
@@ -153,7 +172,7 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
                         onChange={handleInputChange}
                         rows="3"
                         placeholder="Continut articol HTML" 
-                      />
+                      /> */}
                       <ErrorMessage
                         name="continut"
                         className="d-block invalid-feedback"
@@ -163,13 +182,16 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
 
                     <FormGroup>
                       <label htmlFor="poza">Poza</label>
-                      <Field
+                      <input
                         name="poza"
-                        type="text"
-                        id="poza"
-                        className="form-control"
-                        onChange={handleInputChange}
-                     
+                        type="file"
+                        id="file"
+                        accept="image/*"
+                        className="form-control form-control-lg"
+                        onChange={(e) => {
+                          setSelectedFile(e.target.files[0]);
+                          handleFileChange(e.target.files[0]);
+                        }}
                       />
                       <ErrorMessage
                         name="poza"
@@ -186,12 +208,14 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
                         className="form-control"
                         onChange={handleInputChange}
                       >
-                        <option key='0' value="">Select Categorie</option>
-                        {selectCategories.map((option) => 
-                        <option key={option.id} value={option.id}>
-                            {option.nume}
+                        <option key={0} value="">
+                          Select Categorie
                         </option>
-                        )}
+                        {selectCategories.map((option, index) => (
+                          <option key={index} value={option.id}>
+                            {option.nume}
+                          </option>
+                        ))}
                       </Field>
                       <ErrorMessage
                         name="categorie_id"
@@ -201,7 +225,7 @@ const [selectCategories, setSelectCategories]  = useState([{}]);
                     </FormGroup>
 
                     <FormGroup>
-                    <Field
+                      <Field
                         name="user_id"
                         type="hidden"
                         value={user_id}

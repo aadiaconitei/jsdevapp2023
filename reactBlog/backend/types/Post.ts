@@ -9,4 +9,5 @@ export interface Post  extends BasicPost {
     dataadaugare?: Date,
     user_id?: number,
     poza?:string,
+    categorie_nume?:string
 }

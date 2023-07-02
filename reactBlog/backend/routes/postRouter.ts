@@ -17,6 +17,15 @@ postRouter.get("/", async (req: Request, res: Response) => {
     res.status(200).json({"data": posts});
   });
 });
+postRouter.get("/last3", async (req: Request, res: Response) => {
+  postModel.findLast3((err: Error, posts: Post[]) => {
+    if (err) {
+      return res.status(500).json({"errorMessage": err.message});
+    }
+
+    res.status(200).json({"data": posts});
+  });
+});
 postRouter.get("/categories", async (req: Request, res: Response) => {
   postModel.findAllCategories((err: Error, posts: Post[]) => {
     if (err) {
@@ -43,15 +52,15 @@ postRouter.post("/",jsonParser, async (req: Request, res: Response) => {
   console.log('files',req.files);
   const newPost: Post = req.body;
 
-  // let fileToUpload:any;
-  // let uploadPath;
-  // fileToUpload = req.files!.poza as UploadedFile; //Object is possibly 'null' or 'undefined'.
-  // const newFileName = `${Date.now()}-_${fileToUpload.name}`;
-  // uploadPath = path.join(__dirname, '..', '/uploads/', newFileName);
+  let fileToUpload:any;
+  let uploadPath;
+  fileToUpload = req.files!.poza as UploadedFile; //Object is possibly 'null' or 'undefined'.
+  const newFileName = `${Date.now()}_${fileToUpload.name}`;
+  uploadPath = path.join(__dirname, '..', '/uploads/', newFileName);
   
-  // console.log(uploadPath);
-  // fileToUpload.mv(uploadPath);
-  // newPost['poza'] = newFileName;
+  console.log(uploadPath);
+  fileToUpload.mv(uploadPath);
+  newPost['poza'] = newFileName;
   postModel.addPost(newPost, (err: Error, postId: number) => {
     if (err) {
       return res.status(500).json({"message": err.message});

@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
 const express_session_1 = __importDefault(require("express-session"));
+const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const userRouter_1 = require("./routes/userRouter");
 const postRouter_1 = require("./routes/postRouter");
 const adminRouter_1 = require("./routes/adminRouter");
@@ -19,12 +20,14 @@ app.use((0, express_session_1.default)({
     resave: true,
     saveUninitialized: true
 }));
-app.use(express_1.default.static(path_1.default.join(__dirname, 'static')));
+app.use(express_1.default.static(path_1.default.join(__dirname, 'dist')));
+app.use((0, express_fileupload_1.default)());
 const port = process.env.PORT;
 app.use((0, cors_1.default)());
 app.use("/users", userRouter_1.userRouter);
 app.use("/posts", postRouter_1.postRouter);
 app.use("/admin", adminRouter_1.adminRouter);
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname + "/uploads")));
 app.get('/', (req, res) => {
     //res.send('Express + TypeScript Server!!!!');
     res.sendFile(path_1.default.join(__dirname + '/acasa.html'));

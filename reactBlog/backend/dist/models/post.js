@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addPost = exports.findOne = exports.findAllCategories = exports.findAll = void 0;
+exports.addPost = exports.findOne = exports.findAllCategories = exports.findLast3 = exports.findAll = void 0;
 const db_1 = require("../db");
 // Get all posts
 const findAll = (callback) => {
@@ -19,6 +19,7 @@ const findAll = (callback) => {
                 categorie_id: row.categorie_id,
                 user_id: row.user_id,
                 dataadaugare: row.dataadaugare,
+                poza: row.poza
             };
             posts.push(post);
         });
@@ -26,6 +27,34 @@ const findAll = (callback) => {
     });
 };
 exports.findAll = findAll;
+// Get all posts
+const findLast3 = (callback) => {
+    const queryString = `SELECT p.id,p.titlu,p.continut,p.poza, p.user_id,
+  p.categorie_id, p.dataadaugare, c.nume 
+  FROM posts p INNER JOIN categories c on p.categorie_id= c.id ORDER BY p.id DESC LIMIT 3`;
+    db_1.db.query(queryString, (err, result) => {
+        if (err) {
+            callback(err);
+        }
+        const rows = result;
+        const posts = [];
+        rows.forEach((row) => {
+            const post = {
+                id: row.id,
+                titlu: row.titlu,
+                continut: row.continut,
+                categorie_id: row.categorie_id,
+                user_id: row.user_id,
+                dataadaugare: row.dataadaugare,
+                poza: row.poza,
+                categorie_nume: row.nume
+            };
+            posts.push(post);
+        });
+        callback(null, posts);
+    });
+};
+exports.findLast3 = findLast3;
 const findAllCategories = (callback) => {
     const queryString = `SELECT * FROM categories`;
     db_1.db.query(queryString, (err, result) => {
@@ -61,6 +90,7 @@ const findOne = (postId, callback) => {
             user_id: row.user_id,
             dataadaugare: row.dataadaugare,
             poza: row.poza,
+            categorie_nume: row.nume
         };
         callback(null, post);
     });

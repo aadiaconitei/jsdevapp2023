@@ -38,12 +38,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const bodyParser = __importStar(require("body-parser"));
+const path_1 = __importDefault(require("path"));
 const postModel = __importStar(require("../models/post"));
 const postRouter = express_1.default.Router();
 exports.postRouter = postRouter;
 var jsonParser = bodyParser.json();
 postRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     postModel.findAll((err, posts) => {
+        if (err) {
+            return res.status(500).json({ "errorMessage": err.message });
+        }
+        res.status(200).json({ "data": posts });
+    });
+}));
+postRouter.get("/last3", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    postModel.findLast3((err, posts) => {
         if (err) {
             return res.status(500).json({ "errorMessage": err.message });
         }
@@ -71,14 +80,14 @@ postRouter.post("/", jsonParser, (req, res) => __awaiter(void 0, void 0, void 0,
     console.log(req.body);
     console.log('files', req.files);
     const newPost = req.body;
-    // let fileToUpload:any;
-    // let uploadPath;
-    // fileToUpload = req.files!.poza as UploadedFile; //Object is possibly 'null' or 'undefined'.
-    // const newFileName = `${Date.now()}-_${fileToUpload.name}`;
-    // uploadPath = path.join(__dirname, '..', '/uploads/', newFileName);
-    // console.log(uploadPath);
-    // fileToUpload.mv(uploadPath);
-    // newPost['poza'] = newFileName;
+    let fileToUpload;
+    let uploadPath;
+    fileToUpload = req.files.poza; //Object is possibly 'null' or 'undefined'.
+    const newFileName = `${Date.now()}_${fileToUpload.name}`;
+    uploadPath = path_1.default.join(__dirname, '..', '/uploads/', newFileName);
+    console.log(uploadPath);
+    fileToUpload.mv(uploadPath);
+    newPost['poza'] = newFileName;
     postModel.addPost(newPost, (err, postId) => {
         if (err) {
             return res.status(500).json({ "message": err.message });

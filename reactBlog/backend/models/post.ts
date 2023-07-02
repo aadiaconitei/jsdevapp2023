@@ -19,7 +19,35 @@ export const findAll = (callback: Function) => {
         categorie_id: row.categorie_id,
         user_id: row.user_id,
         dataadaugare: row.dataadaugare,
-        
+        poza: row.poza
+      };
+      posts.push(post);
+    });
+    callback(null, posts);
+  });
+};
+
+// Get all posts
+export const findLast3 = (callback: Function) => {
+  const queryString = `SELECT p.id,p.titlu,p.continut,p.poza, p.user_id,
+  p.categorie_id, p.dataadaugare, c.nume 
+  FROM posts p INNER JOIN categories c on p.categorie_id= c.id ORDER BY p.id DESC LIMIT 3`;
+  db.query(queryString, (err, result) => {
+    if (err) {
+      callback(err); 
+    }
+    const rows = <RowDataPacket[]>result;
+    const posts: Post[] = [];
+    rows.forEach((row) => {
+      const post: Post = {
+        id: row.id,
+        titlu: row.titlu,
+        continut: row.continut,
+        categorie_id: row.categorie_id,
+        user_id: row.user_id,
+        dataadaugare: row.dataadaugare,
+        poza: row.poza,
+        categorie_nume:row.nume
       };
       posts.push(post);
     });
@@ -61,7 +89,7 @@ export const findOne = (postId: number, callback: Function) => {
       user_id: row.user_id,
       dataadaugare: row.dataadaugare,
       poza: row.poza,
-        
+      categorie_nume:row.nume
      
     };
     callback(null, post);
